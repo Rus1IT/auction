@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 2025-05-24-08
       author: ruslan
       labels: production
-      context: prod, dev
+      context: prod,dev
       comment: creating the notifications table and notification_type enum
       changes:
         - sql:
@@ -27,7 +27,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_notifications
               - column:
-                  name: user_id
+                  name: account_id
                   type: BIGINT
                   constraints:
                     nullable: false
@@ -57,10 +57,10 @@ databaseChangeLog:
                   type: TIMESTAMP
         - addForeignKeyConstraint:
             baseTableName: notifications
-            baseColumnNames: user_id
-            constraintName: fk_notifications_user
-            referencedTableName: users
-            referencedColumnNames: user_id
+            baseColumnNames: account_id
+            constraintName: fk_notifications_account
+            referencedTableName: accounts
+            referencedColumnNames: account_id
             onDelete: CASCADE
         - addForeignKeyConstraint:
             baseTableName: notifications

@@ -3,34 +3,34 @@ databaseChangeLog:
       id: 2025-05-24-01
       author: ruslan
       labels: production
-      context: prod, dev
-      comment: creating the users table and user_type enum
+      context: prod,dev
+      comment: creating the accounts table and account_type enum
       changes:
         - sql:
             splitStatements: false
             stripComments: true
             sql: |
-              CREATE TYPE user_type AS ENUM (
+              CREATE TYPE account_type AS ENUM (
                 'USER',
                 'ADMIN'
               );
         - createTable:
-            tableName: users
+            tableName: accounts
             columns:
               - column:
-                  name: user_id
+                  name: account_id
                   type: BIGINT
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: pk_users
+                    primaryKeyName: pk_accounts
               - column:
                   name: email
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
                     unique: true
-                    uniqueConstraintName: uq_users_email
+                    uniqueConstraintName: uq_accounts_email
               - column:
                   name: password_hash
                   type: VARCHAR(255)
@@ -44,13 +44,13 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: type
-                  type: user_type
+                  type: account_type
                   constraints:
                     nullable: false
       rollback:
         - dropTable:
-            tableName: users
+            tableName: accounts
         - sql:
             splitStatements: false
             stripComments: true
-            sql: DROP TYPE IF EXISTS user_type;
+            sql: DROP TYPE IF EXISTS account_type;

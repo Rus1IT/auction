@@ -6,7 +6,7 @@ databaseChangeLog:
         - tagDatabase:
             tag: create_tables
   - include:
-      file: create-users-table.yml
+      file: create-accounts-table.yml
       relativeToChangelogFile: true
   - include:
       file: create-auctions-table.yml

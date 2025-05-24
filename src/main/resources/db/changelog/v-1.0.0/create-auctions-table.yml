@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 2025-05-24-02
       author: ruslan
       labels: production
-      context: prod, dev
+      context: prod,dev
       comment: creating the auctions table and auction_status enum
       changes:
         - sql:
@@ -26,7 +26,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_auctions
               - column:
-                  name: seller_id
+                  name: account_id
                   type: BIGINT
                   constraints:
                     nullable: false
@@ -78,12 +78,11 @@ databaseChangeLog:
                   type: BIGINT
         - addForeignKeyConstraint:
             baseTableName: auctions
-            baseColumnNames: seller_id
-            constraintName: fk_auctions_seller
-            referencedTableName: users
-            referencedColumnNames: user_id
+            baseColumnNames: account_id
+            constraintName: fk_auctions_account
+            referencedTableName: accounts
+            referencedColumnNames: account_id
             onDelete: CASCADE
-
       rollback:
         - dropTable:
             tableName: auctions

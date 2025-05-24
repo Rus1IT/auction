@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 2025-05-24-06
       author: ruslan
       labels: production
-      context: prod, dev
+      context: prod,dev
       comment: creating the categories table
       changes:
         - createTable:
