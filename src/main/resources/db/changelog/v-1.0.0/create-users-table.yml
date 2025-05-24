@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-01
+      author: ruslan
+      labels: production
+      context: prod, dev
+      comment: creating the users table and user_type enum
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TYPE user_type AS ENUM (
+                'USER',
+                'ADMIN'
+              );
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_users
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uq_users_email
+              - column:
+                  name: password_hash
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: user_type
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: users
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: DROP TYPE IF EXISTS user_type;

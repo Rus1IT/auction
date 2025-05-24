@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-08
+      author: ruslan
+      labels: production
+      context: prod, dev
+      comment: creating the notifications table and notification_type enum
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TYPE notification_type AS ENUM (
+                'BID_PLACED',
+                'OUTBID',
+                'AUCTION_WON',
+                'AUCTION_CLOSED'
+              );
+        - createTable:
+            tableName: notifications
+            columns:
+              - column:
+                  name: notification_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_notifications
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: auction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: notification_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: readed_at
+                  type: TIMESTAMP
+        - addForeignKeyConstraint:
+            baseTableName: notifications
+            baseColumnNames: user_id
+            constraintName: fk_notifications_user
+            referencedTableName: users
+            referencedColumnNames: user_id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: notifications
+            baseColumnNames: auction_id
+            constraintName: fk_notifications_auction
+            referencedTableName: auctions
+            referencedColumnNames: auction_id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: notifications
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: DROP TYPE IF EXISTS notification_type;
