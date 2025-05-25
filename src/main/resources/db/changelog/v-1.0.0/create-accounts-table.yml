@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-01
+      author: ruslan
+      labels: production
+      context: prod,dev
+      comment: creating the accounts table and account_type enum
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TYPE account_type AS ENUM (
+                'USER',
+                'ADMIN'
+              );
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_accounts
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: uq_accounts_email
+              - column:
+                  name: password_hash
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: account_type
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: accounts
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: DROP TYPE IF EXISTS account_type;

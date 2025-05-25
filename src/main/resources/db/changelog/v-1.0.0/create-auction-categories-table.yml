@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-07
+      author: ruslan
+      labels: production
+      context: prod,dev
+      comment: creating the auction_categories join table
+      changes:
+        - createTable:
+            tableName: auction_categories
+            columns:
+              - column:
+                  name: auction_category_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_auction_categories
+              - column:
+                  name: auction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: auction_categories
+            baseColumnNames: auction_id
+            constraintName: fk_auction_categories_auction
+            referencedTableName: auctions
+            referencedColumnNames: auction_id
+            onDelete: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: auction_categories
+            baseColumnNames: category_id
+            constraintName: fk_auction_categories_category
+            referencedTableName: categories
+            referencedColumnNames: category_id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: auction_categories

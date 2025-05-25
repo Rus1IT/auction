@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables
+      author: ruslan
+      changes:
+        - tagDatabase:
+            tag: create_tables
+  - include:
+      file: create-accounts-table.yml
+      relativeToChangelogFile: true
+  - include:
+      file: create-auctions-table.yml
+      relativeToChangelogFile: true
+  - include:
+      file: create-bids-table.yml
+      relativeToChangelogFile: true
+  - include:
+      file: create-auctions-image-table.yml
+      relativeToChangelogFile: true
+  - include:
+      file: create-categories-table.yml
+      relativeToChangelogFile: true
+  - include:
+      file: create-notification-table.yml
+      relativeToChangelogFile: true

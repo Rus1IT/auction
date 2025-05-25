@@ -1,0 +1,44 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-03
+      author: ruslan
+      labels: production
+      context: prod,dev
+      comment: creating the auction_images table
+      changes:
+        - createTable:
+            tableName: auction_images
+            columns:
+              - column:
+                  name: image_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_auction_images
+              - column:
+                  name: auction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: auction_images
+            baseColumnNames: auction_id
+            constraintName: fk_image_auction
+            referencedTableName: auctions
+            referencedColumnNames: auction_id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: auction_images

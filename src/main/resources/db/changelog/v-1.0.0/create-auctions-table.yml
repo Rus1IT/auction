@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2025-05-24-02
+      author: ruslan
+      labels: production
+      context: prod,dev
+      comment: creating the auctions table and auction_status enum
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: |
+              CREATE TYPE auction_status AS ENUM (
+                'ACTIVE',
+                'CLOSED',
+                'CANCELLED'
+              );
+        - createTable:
+            tableName: auctions
+            columns:
+              - column:
+                  name: auction_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_auctions
+              - column:
+                  name: seller_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: min_price
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: current_price
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: auction_status
+                  defaultValue: 'ACTIVE'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_bid_at
+                  type: TIMESTAMP
+              - column:
+                  name: duration
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_time
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+              baseTableName: auctions
+              baseColumnNames: seller_id
+              constraintName: fk_auctions_seller
+              referencedTableName: accounts
+              referencedColumnNames: account_id
+              onDelete: CASCADE
+      rollback:
+        - dropTable:
+            tableName: auctions
+        - sql:
+            splitStatements: false
+            stripComments: true
+            sql: DROP TYPE IF EXISTS auction_status;
