@@ -21,8 +21,5 @@ databaseChangeLog:
       file: create-categories-table.yml
       relativeToChangelogFile: true
   - include:
-      file: create-auction-categories-table.yml
-      relativeToChangelogFile: true
-  - include:
       file: create-notification-table.yml
       relativeToChangelogFile: true

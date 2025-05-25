@@ -1,11 +1,13 @@
 package root.auction.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import root.auction.enums.AccountType;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,10 +19,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
     @Setter(AccessLevel.NONE)
-    private Long userId;
+    private Long accountId;
 
     @NotNull
-    @Column(name = "email", nullable = false, unique = true, updatable = false, length = 100)
+    @Email
+    @Column(name = "email", nullable = false, unique = true, updatable = false)
     private String email;
 
     @NotNull
@@ -29,11 +32,11 @@ public class Account {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+    @Setter(AccessLevel.NONE)
+    private LocalDateTime createdAt;
 
     @NotNull
-    @Column(name = "type", nullable = false, length = 50)
     @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, columnDefinition = "account_type")
     private AccountType accountType;
-
 }

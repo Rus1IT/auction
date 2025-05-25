@@ -26,13 +26,13 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_auctions
               - column:
-                  name: account_id
+                  name: seller_id
                   type: BIGINT
                   constraints:
                     nullable: false
               - column:
                   name: title
-                  type: TEXT
+                  type: VARCHAR(200)
                   constraints:
                     nullable: false
               - column:
@@ -73,16 +73,14 @@ databaseChangeLog:
                   type: TIMESTAMP
                   constraints:
                     nullable: false
-              - column:
-                  name: images_id
-                  type: BIGINT
+
         - addForeignKeyConstraint:
-            baseTableName: auctions
-            baseColumnNames: account_id
-            constraintName: fk_auctions_account
-            referencedTableName: accounts
-            referencedColumnNames: account_id
-            onDelete: CASCADE
+              baseTableName: auctions
+              baseColumnNames: seller_id
+              constraintName: fk_auctions_seller
+              referencedTableName: accounts
+              referencedColumnNames: account_id
+              onDelete: CASCADE
       rollback:
         - dropTable:
             tableName: auctions

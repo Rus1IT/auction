@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 2025-05-24-05
       author: ruslan
       labels: production
-      context: prod,dev
+      contexts: prod,dev
       comment: creating the bids table
       changes:
         - createTable:
@@ -17,7 +17,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_bids
               - column:
-                  name: account_id
+                  name: bidder_id
                   type: BIGINT
                   constraints:
                     nullable: false
@@ -28,7 +28,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: amount
-                  type: BIGINT
+                  type: NUMERIC(10,2)
                   constraints:
                     nullable: false
               - column:
@@ -40,7 +40,7 @@ databaseChangeLog:
 
         - addForeignKeyConstraint:
             baseTableName: bids
-            baseColumnNames: account_id
+            baseColumnNames: bidder_id
             constraintName: fk_bids_account
             referencedTableName: accounts
             referencedColumnNames: account_id
@@ -53,6 +53,7 @@ databaseChangeLog:
             referencedTableName: auctions
             referencedColumnNames: auction_id
             onDelete: CASCADE
+
       rollback:
         - dropTable:
             tableName: bids

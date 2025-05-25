@@ -23,6 +23,12 @@ databaseChangeLog:
                     nullable: false
                     unique: true
                     uniqueConstraintName: uq_categories_name
+
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
       rollback:
         - dropTable:
             tableName: categories

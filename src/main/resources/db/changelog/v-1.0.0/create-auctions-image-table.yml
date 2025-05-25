@@ -26,10 +26,16 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
         - addForeignKeyConstraint:
             baseTableName: auction_images
             baseColumnNames: auction_id
-            constraintName: fk_auction_images_auctions
+            constraintName: fk_image_auction
             referencedTableName: auctions
             referencedColumnNames: auction_id
             onDelete: CASCADE
