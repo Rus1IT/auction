@@ -14,20 +14,6 @@ java {
 	}
 }
 
-liquibase {
-	activities {
-		main {
-			changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yml'
-			url            'jdbc:h2:mem:auctiondb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE'
-			username       'user'
-			password       'password1234'
-			driver         'org.h2.Driver'
-		}
-	}
-}
-
-
-
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -45,6 +31,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.liquibase:liquibase-core:4.31.0'
 	implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.6'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

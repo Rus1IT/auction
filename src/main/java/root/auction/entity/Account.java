@@ -3,6 +3,7 @@ package root.auction.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import root.auction.enums.AccountType;
@@ -20,6 +21,12 @@ public class Account {
     @Column(name = "account_id")
     @Setter(AccessLevel.NONE)
     private Long accountId;
+
+    @NotNull
+    @Column(name = "username", nullable = false)
+    @Size(min = 1, max = 50)
+    private String username;
+
 
     @NotNull
     @Email
